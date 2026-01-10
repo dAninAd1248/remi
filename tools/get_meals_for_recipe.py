@@ -1,5 +1,4 @@
 import requests
-import json
 
 def search_meal_by_name(meal_name):
     """
