@@ -8,3 +8,4 @@ langchain_community==0.3.27
 langchain-experimental
 wikipedia
 langgraph_supervisor
+winsdk==1.0.0b10
