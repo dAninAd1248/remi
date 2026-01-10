@@ -38,7 +38,6 @@ def search_meal_by_name(meal_name):
 
     # filter_result = {key: meals[0][key] for key in ["strInstructions", "strIngredient1"]}
 
-
     return filter_result
 
 
@@ -46,4 +45,4 @@ def search_meal_by_name(meal_name):
 
 
 
-print(search_meal_by_name("Fettucine alfredo"))
+# print(search_meal_by_name("Lettuce"))

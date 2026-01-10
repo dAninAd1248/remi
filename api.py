@@ -3,7 +3,7 @@ import langchain.tools
 from dotenv import load_dotenv as load_dotenv_smart
 from langchain_core.messages import HumanMessage, AIMessage, ToolMessage, SystemMessage, BaseMessage
 from langgraph.errors import GraphRecursionError
-# from remi import app
+from remi import app
 load_dotenv_smart()
 
 def langchain_messages_to_dicts(messages: list[BaseMessage]) -> list[dict]:
@@ -60,12 +60,12 @@ def continue_conversation(message_dicts: list[dict]) -> list[dict]:
     while not result_messages and attempts < 10:
         attempts += 1
         try:
-            # result = app.invoke(prompt, {
-            #     "configurable": {"thread_id": "remi"},
-            #     "recursion_limit": 40
-            # })
-            # result_messages = result["messages"]
-            result_messages = []  # --- IGNORE ---
+            result = app.invoke(prompt, {
+                "configurable": {"thread_id": "remi"},
+                "recursion_limit": 40
+            })
+            result_messages = result["messages"]
+            # result_messages = []  # --- IGNORE ---
         except GraphRecursionError:
             # Force with system prompt
             prompt['messages'].append(
