@@ -1,3 +1,4 @@
+from langchain.tools import tool
 import os
 import time
 from pathlib import Path
@@ -91,16 +92,49 @@ def get_nearby_places(query, lat, long, radius=10000, max_results=1, rank_by_dis
     # Trim to requested max_results
     return results[:max_results]
 
-def main():
-	lat, long = 18.21045186593577, -67.14113596931563
-	try:
-		results = get_nearby_places('Mesón', lat, long, max_results=10, rank_by_distance=True)
-	except Exception as e:
-		print('Error calling get_stores():', e)
-		return
+def get_location():
+    # Dummy
+    return 18.21045186593577, -67.14113596931563
 
-	from pprint import pprint
-	pprint(results)
+@tool
+def get_places(places: list[str], max_results=3):
+    """
+    Get nearby places for a list of store names.
+    :param places: List of store names to search for.
+    :param max_results: Maximum number of results to return per store.
+    :return: Dictionary mapping store names to lists of nearby place results.
+    """
+    lat, long = get_location()
+    all_results = {}
+    for place in places:
+        try:
+            results = get_nearby_places(place, lat, long, max_results=max_results, radius=10000)
+            keep_keys = [
+                "business_status",
+                "name",
+                "international_phone_number",
+                "place_id",
+                "price_level",
+                "rating",
+                "types",
+                "vicinity",
+                "maps_url"
+            ]
+
+            filtered = []
+            for r in results:
+                out = {k: r.get(k) for k in keep_keys if k in r}
+                filtered.append(out)
+
+            all_results[place] = filtered
+        except Exception as e:
+            print(f'Error getting places for {place}:', e)
+    return all_results
+
+def main():
+    from pprint import pprint
+    results = get_places.invoke({"places": ["Walmart", "Target", "Best Buy"], "max_results": 3})
+    pprint(results)
 
 if __name__ == '__main__':
 	main()
