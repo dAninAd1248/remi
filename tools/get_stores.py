@@ -9,7 +9,7 @@ from googlemaps.places import places_nearby, place
 from urllib.parse import quote_plus
 
 import asyncio
-import winsdk.windows.devices.geolocation as wdg
+# import winsdk.windows.devices.geolocation as wdg
 
 def _load_api_key():
     # Load .env (if present) then read environment variables
@@ -96,9 +96,10 @@ def get_nearby_places(query, lat, long, radius=10000, max_results=1, rank_by_dis
 
 async def get_coords():
     """Retrieves latitude and longitude using Windows Location Service."""
-    locator = wdg.Geolocator()
-    pos = await locator.get_geoposition_async()
-    return [pos.coordinate.latitude, pos.coordinate.longitude]
+    # locator = wdg.Geolocator()
+    # pos = await locator.get_geoposition_async()
+    # return [pos.coordinate.latitude, pos.coordinate.longitude]
+    return 18.21735686891109, -67.14221769364067
 
 def get_location():
     """Runs the async function and handles permissions."""
